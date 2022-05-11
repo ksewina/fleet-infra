@@ -2,25 +2,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: podinfo
+  name: apps
   namespace: flux-system
 spec:
   interval: 5m0s
-  path: ./kustomize
+  path: ./infrastructure/kustomization.yaml
   prune: true
   sourceRef:
+    branch: main
     kind: GitRepository
-    name: podinfo
-  targetNamespace: default
-  patches:
-  - patch: |-
-      apiVersion: autoscaling/v2beta2
-      kind: HorizontalPodAutoscaler
-      metadata:
-        name: podinfo
-      spec:
-        minReplicas: 3             
-    target:
-      name: podinfo
-      kind: HorizontalPodAutoscaler
+    name: fleet-infra
+  targetNamespace: velero
 
